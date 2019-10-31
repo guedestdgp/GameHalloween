@@ -28,6 +28,7 @@ class ViewController: UIViewController {
         stuff = [("Dog", "🐶"), ("Cat", "🐱"), ("Mice", "🐭"), ("Fox", "🦊"), ("Rooster", "🐔"), ("Panda", "🐼"), ("Pumpkin", "🎃"), ("Ghost", "👻"), ("Dice", "🎲"), ("Game", "🎳")]
         lbLives.text = "Lives: 10"
         lbPoint.text = "Point: 0"
+        buttonsChange()
     }
     
     @objc func update() {
@@ -36,13 +37,36 @@ class ViewController: UIViewController {
     }
     
     @objc func buttonsChange() {
-        let element = stuff.randomElement()!.0
-        if btsChoices[0].titleLabel?.text != element  {
-            btsChoices[0].setTitle(stuff.randomElement()!.0, for: .normal)
-            btsChoices[1].setTitle(stuff.randomElement()!.0, for: .normal)
-            btsChoices[2].setTitle(stuff.randomElement()!.0, for: .normal)
-            btsChoices[3].setTitle(stuff.randomElement()!.0, for: .normal)
-        }
+        let element1 = stuff.randomElement()!
+        let newElements1 = stuff.filter { $0 != element1 }
+        btsChoices[0].setTitle(element1.0, for: .normal)
+        
+        let element2 = newElements1.randomElement()!
+        let newElements2 = newElements1.filter { $0 != element2 }
+        btsChoices[1].setTitle(element2.0, for: .normal)
+        
+        let element3 = newElements2.randomElement()!
+        let newElements3 = newElements2.filter { $0 != element3 }
+        btsChoices[3].setTitle(element3.0, for: .normal)
+        
+        let element4 = newElements3.randomElement()!
+        btsChoices[4].setTitle(element4.0, for: .normal)
+        
+//        switch element {
+//        case btsChoices[0].titleLabel?.text:
+//            element = stuff.randomElement()!.0
+//        case btsChoices[1].titleLabel?.text:
+//            element = stuff.randomElement()!.0
+//        case btsChoices[2].titleLabel?.text:
+//            btsChoices[2].titleLabel?.text = element
+//        case btsChoices[3].titleLabel?.text:
+//            btsChoices[3].titleLabel?.text = element
+//        default:
+//            btsChoices[0].setTitle(stuff.randomElement()!.0, for: .normal)
+//            btsChoices[1].setTitle(stuff.randomElement()!.0, for: .normal)
+//            btsChoices[2].setTitle(stuff.randomElement()!.0, for: .normal)
+//            btsChoices[3].setTitle(stuff.randomElement()!.0, for: .normal)
+//        }
     }
     
     @objc func countTimer() {
@@ -57,6 +81,7 @@ class ViewController: UIViewController {
     func randonImages() -> String {
         return stuff.randomElement()!.1
     }
+    
     @IBAction func btStartAction(_ sender: UIButton) {
         lbTimer.text = "\(seconds)"
         update()
