@@ -28,16 +28,6 @@ class ViewController: UIViewController {
         stuff = [("Dog", "🐶"), ("Cat", "🐱"), ("Mice", "🐭"), ("Fox", "🦊"), ("Rooster", "🐔"), ("Panda", "🐼"), ("Pumpkin", "🎃"), ("Ghost", "👻"), ("Dice", "🎲"), ("Game", "🎳")]
         lbLives.text = "Lives: 10"
         lbPoint.text = "Point: 0"
-        lbTimer.text = "\(seconds)"
-        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(update), userInfo: nil, repeats: true)
-        timerCount = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
-        timerButtons = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(buttonsChange), userInfo: nil, repeats: true)
-        update()
-        buttonsChange()
-    }
-
-
-    @IBAction func btsChoicesAction(_ sender: UIButton) {
     }
     
     @objc func update() {
@@ -46,10 +36,13 @@ class ViewController: UIViewController {
     }
     
     @objc func buttonsChange() {
-        btsChoices[0].setTitle(stuff.randomElement()!.0, for: .normal)
-        btsChoices[1].setTitle(stuff.randomElement()!.0, for: .normal)
-        btsChoices[2].setTitle(stuff.randomElement()!.0, for: .normal)
-        btsChoices[3].setTitle(stuff.randomElement()!.0, for: .normal)
+        let element = stuff.randomElement()!.0
+        if btsChoices[0].titleLabel?.text != element  {
+            btsChoices[0].setTitle(stuff.randomElement()!.0, for: .normal)
+            btsChoices[1].setTitle(stuff.randomElement()!.0, for: .normal)
+            btsChoices[2].setTitle(stuff.randomElement()!.0, for: .normal)
+            btsChoices[3].setTitle(stuff.randomElement()!.0, for: .normal)
+        }
     }
     
     @objc func countTimer() {
@@ -63,6 +56,14 @@ class ViewController: UIViewController {
     
     func randonImages() -> String {
         return stuff.randomElement()!.1
+    }
+    @IBAction func btStartAction(_ sender: UIButton) {
+        lbTimer.text = "\(seconds)"
+        update()
+        buttonsChange()
+        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        timerCount = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
+        timerButtons = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(buttonsChange), userInfo: nil, repeats: true)
     }
 }
 
