@@ -22,13 +22,18 @@ class ViewController: UIViewController {
     var timerButtons: Timer?
     var isTimerRunning = false
     var stuff = [(String, String)]()
+    var points = 0
+    var lives = 10
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         stuff = [("Dog", "🐶"), ("Cat", "🐱"), ("Mice", "🐭"), ("Fox", "🦊"), ("Rooster", "🐔"), ("Panda", "🐼"), ("Pumpkin", "🎃"), ("Ghost", "👻"), ("Dice", "🎲"), ("Game", "🎳")]
         lbLives.text = "Lives: 10"
         lbPoint.text = "Point: 0"
-        //buttonsChange()
+        btsChoices[0].isEnabled = false
+        btsChoices[1].isEnabled = false
+        btsChoices[2].isEnabled = false
+        btsChoices[3].isEnabled = false
     }
     
     @objc func update() {
@@ -67,12 +72,41 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btStartAction(_ sender: UIButton) {
+        btsChoices[0].isEnabled = true
+        btsChoices[1].isEnabled = true
+        btsChoices[2].isEnabled = true
+        btsChoices[3].isEnabled = true
         lbTimer.text = "\(seconds)"
         update()
         buttonsChange()
         timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(update), userInfo: nil, repeats: true)
         timerCount = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countTimer), userInfo: nil, repeats: true)
         timerButtons = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(buttonsChange), userInfo: nil, repeats: true)
+    }
+    @IBAction func btChoicesAction(_ sender: UIButton) {
+        var itemButtom = [(String, String)]()
+        var itemLabel = [(String, String)]()
+        
+        let alert = UIAlertController(title: "Sad for you", message: "You lost a point!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        for item in stuff {
+            if item.0 == sender.titleLabel?.text {
+                itemButtom = [item]
+            }
+            if item.1 == lbImages.text {
+                itemLabel = [item]
+            }
+        }
+        
+        if itemButtom.first!.0 == itemLabel.first!.0 {
+            points += 1
+            lbPoint.text = "Points: \(points)"
+        } else {
+            lives -= 1
+            lbLives.text = "Lives: \(lives)"
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
